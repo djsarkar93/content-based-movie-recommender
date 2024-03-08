@@ -134,7 +134,8 @@ def recommend(movie_title):
     movie_similarity_scores = similarity_matrix[ movie_idx ]
     recommended_movie_ids = []
     for i in sorted(enumerate(movie_similarity_scores), key = lambda x: x[-1], reverse = True)[1:6]:
-        recommended_movie_ids.append(i[0])
+        movie_id = movies_tags_df.iloc[ i[0] ].id 
+        recommended_movie_ids.append( movie_id )
     return recommended_movie_ids
 
 #print(recommend(movie_title='Batman Begins'))
