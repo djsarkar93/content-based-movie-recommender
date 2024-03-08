@@ -4,7 +4,7 @@ This application provides content based movie recommendations using vector cosin
 
 You can experience the demo of this app [here](https://djsarkar93-cbmovrcmndr.streamlit.app/).
 
-<img src="preview.png"  width="300">
+<img src="preview.png"  width="450">
 
 
 ## Run Locally
