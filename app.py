@@ -2,10 +2,23 @@
 # Imports
 ########################################################################################################################
 import cbrcmndr
+import requests
 
 import streamlit as st
 import pandas as pd
 
+
+
+########################################################################################################################
+# Functions
+########################################################################################################################
+def fetch_mov_data(movie_id):
+    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={st.secrets["TMDB_API_KEY"]}&language=en-US')
+    data = response.json()
+    #print(data)
+    title = data['title']
+    poster_path = 'https://image.tmdb.org/t/p/w500/' + data['poster_path']
+    return title, poster_path
 
 
 ########################################################################################################################
@@ -23,10 +36,30 @@ if __name__ == '__main__':
     sel_mov_title = st.selectbox('Please choose a movie:', cbrcmndr.movies_tags_df['title'].values)
     col1, col2, col3 = st.columns([1,1,1])
     with col2:    
-        rcmnd_btn = st.button('See Similar Movies')
+        rcmnd_btn = st.button('Find Similar Movies')
     st.divider()
     
     if rcmnd_btn:
         rcmndd_ids = cbrcmndr.recommend(movie_title = sel_mov_title)
-        st.write(rcmndd_ids)
+        
+        recommendations = []
+        for mid in rcmndd_ids:
+            recommendations.append( (mid, *fetch_mov_data(mid)) )
+        
+        col1, col2, col3, col4, col5 = st.columns([1,1,1,1,1])
+        with col1:
+            st.image( recommendations[0][2] )
+            st.markdown( recommendations[0][1] )
+        with col2:
+            st.image( recommendations[1][2] )
+            st.markdown( recommendations[1][1] )
+        with col3:
+            st.image( recommendations[2][2] )
+            st.markdown( recommendations[2][1] )
+        with col4:
+            st.image( recommendations[3][2] )
+            st.markdown( recommendations[3][1] )
+        with col5:
+            st.image( recommendations[4][2] )
+            st.markdown( recommendations[4][1] )
     
